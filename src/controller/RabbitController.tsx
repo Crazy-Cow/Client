@@ -86,29 +86,37 @@ const RabbitController = ({
         return;
       }
 
+      if (vel.y > 0.1 && !isOnGround) {
+        setAnimation('CharacterArmature|Jump_Idle');
+        return;
+      }
+
       const velocityMagnitude = Math.sqrt(vel.x * vel.x + vel.z * vel.z);
       const isMoving = velocityMagnitude > 0.5;
       const hasGift = giftCnt > 0;
-      if (
-        (isMoving &&
-          animation ===
-            (hasGift
-              ? 'CharacterArmature|Run_Gun'
-              : 'CharacterArmature|Run')) ||
-        (!isMoving &&
-          animation ===
-            (hasGift ? 'CharacterArmature|Idle_Gun' : 'CharacterArmature|Idle'))
-      )
-        return;
-      setAnimation(
-        isMoving
-          ? hasGift
-            ? 'CharacterArmature|Run_Gun'
-            : 'CharacterArmature|Run'
-          : hasGift
+      const hasLotsOfGifts = giftCnt >= 3;
+
+      // 현재 상태에 맞는 애니메이션 결정
+      const determineAnimation = () => {
+        if (!isMoving) {
+          return hasGift
             ? 'CharacterArmature|Idle_Gun'
-            : 'CharacterArmature|Idle',
-      );
+            : 'CharacterArmature|Idle';
+        }
+
+        // 선물 3개 이상이면 걷기
+        if (hasLotsOfGifts) {
+          return 'CharacterArmature|Walk_Gun';
+        }
+
+        return hasGift ? 'CharacterArmature|Run_Gun' : 'CharacterArmature|Run';
+      };
+
+      const targetAnimation = determineAnimation();
+
+      if (animation !== targetAnimation) {
+        setAnimation(targetAnimation);
+      }
     },
     [animation, giftCnt, isBeingStolen, shift],
   );
@@ -188,7 +196,7 @@ const RabbitController = ({
               0.016 *
               import.meta.env.VITE_INGAME_EXTRA_GRAVITY;
           else vel.y = import.meta.env.VITE_INGAME_JUMP_FORCE;
-          setAnimation('CharacterArmature|Jump');
+          setAnimation('CharacterArmature|Jump_Idle');
         } else if (!isOnGround) {
           vel.y +=
             import.meta.env.VITE_INGAME_GRAVITY *
@@ -226,18 +234,14 @@ const RabbitController = ({
             500,
           );
         } else if (!isPunching.current && isOnGround) {
-          if (movement.x !== 0 || movement.z !== 0)
-            setAnimation(
-              giftCnt > 0
-                ? 'CharacterArmature|Run_Gun'
-                : 'CharacterArmature|Run',
-            );
-          else
-            setAnimation(
-              giftCnt > 0
-                ? 'CharacterArmature|Idle_Gun'
-                : 'CharacterArmature|Idle',
-            );
+          updateAnimation(
+            {
+              x: vel.x,
+              y: vel.y,
+              z: vel.z,
+            },
+            isOnGround,
+          );
         }
 
         rb.current.setLinvel(vel, true);
