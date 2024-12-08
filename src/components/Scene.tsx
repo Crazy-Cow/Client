@@ -9,7 +9,11 @@ import Map from './map/Map';
 import { gameItemsAtom } from '../atoms/GameAtoms';
 import { ItemBox } from '../models/ItemBox';
 
-export default function Scene() {
+interface SceneProps {
+  mouseSpeed: number;
+}
+
+export default function Scene({ mouseSpeed }: SceneProps) {
   const players = useAtomValue(playersAtom);
   const gameItems = useAtomValue(gameItemsAtom);
   const { id } = useAtomValue(playerInfoAtom);
@@ -34,6 +38,7 @@ export default function Scene() {
                 player={player}
                 key={player.id}
                 isLocalPlayer={player.id === id}
+                mouseSpeed={mouseSpeed}
               />
             );
           else if (player.charType === 2)
@@ -42,6 +47,7 @@ export default function Scene() {
                 player={player}
                 key={player.id}
                 isLocalPlayer={player.id === id}
+                mouseSpeed={mouseSpeed}
               />
             );
           else if (player.charType === 3)
@@ -50,6 +56,7 @@ export default function Scene() {
                 player={player}
                 key={player.id}
                 isLocalPlayer={player.id === id}
+                mouseSpeed={mouseSpeed}
               />
             );
         })}

@@ -15,7 +15,8 @@ import GameLogsPage from '../pages/GameLogsPage';
 import MiniMap from './MiniMap';
 import SkillCooldownIndicator from './UI/SkillCooldownIndicator';
 import ItemCard from './ItemCard';
-import { useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import MouseSensitivityController from './UI/MouseSensitivityController';
 
 const AuthRouter = () => {
   const [gameScreen] = useAtom(gameScreenAtom);
@@ -23,6 +24,8 @@ const AuthRouter = () => {
   const players = useAtomValue(playersAtom);
   const [, playAudio] = useAtom(playAudioAtom);
   const prevItemsRef = useRef(0);
+
+  const [mouseSpeed, setMouseSpeed] = useState(0.025);
 
   const currentPlayer = useMemo(
     () => players.find((p) => p.id === id),
@@ -58,12 +61,16 @@ const AuthRouter = () => {
             gl={{ failIfMajorPerformanceCaveat: true }}
           >
             <color attach="background" args={['#0D1B2A']} />
-            <Scene />
+            <Scene mouseSpeed={mouseSpeed} />
           </Canvas>
           <MiniMap />
           <KillLogs />
           <SkillCooldownIndicator />
           <ItemCard itemType={playerItems} />
+          <MouseSensitivityController
+            mouseSpeed={mouseSpeed}
+            onChange={setMouseSpeed}
+          />
         </div>
       )}
       {gameScreen === GameScreen.GAME_OVER && <GameOverPage />}
