@@ -1,9 +1,21 @@
 import { useAtomValue } from 'jotai';
 import { KillComboLogsAtom, killLogsAtom } from '../atoms/GameAtoms';
+import { playerInfoAtom } from '../atoms/PlayerAtoms';
+import { useEffect, useState } from 'react';
 
 const KillLogs = () => {
   const kilLogs = useAtomValue(killLogsAtom);
   const comboLogs = useAtomValue(KillComboLogsAtom);
+  const playerInfo = useAtomValue(playerInfoAtom);
+  const [showDamageOverlay, setShowDamageOverlay] = useState(false);
+
+  useEffect(() => {
+    const latestLog = kilLogs[kilLogs.length - 1];
+    if (latestLog && latestLog.victim.id === playerInfo.id) {
+      setShowDamageOverlay(true);
+      setTimeout(() => setShowDamageOverlay(false), 1000);
+    }
+  }, [kilLogs, playerInfo.id]);
 
   return (
     <>
@@ -22,11 +34,11 @@ const KillLogs = () => {
                 className="flex text-1-xmas-green"
                 style={{
                   textShadow: `
-      2px 2px 0 white, 
-      -2px -2px 0 white, 
-      2px -2px 0 white, 
-      -2px 2px 0 white
-    `,
+                    2px 2px 0 white, 
+                    -2px -2px 0 white, 
+                    2px -2px 0 white, 
+                    -2px 2px 0 white
+                  `,
                 }}
               >
                 {nickName}의
@@ -35,11 +47,11 @@ const KillLogs = () => {
                 className="flex text-2-xmas-red"
                 style={{
                   textShadow: `
-      2px 2px 0 white, 
-      -2px -2px 0 white, 
-      2px -2px 0 white, 
-      -2px 2px 0 white
-    `,
+                    2px 2px 0 white, 
+                    -2px -2px 0 white, 
+                    2px -2px 0 white, 
+                    -2px 2px 0 white
+                  `,
                 }}
               >
                 {message} CATCH!
@@ -59,6 +71,17 @@ const KillLogs = () => {
           </div>
         ))}
       </div>
+      {showDamageOverlay && (
+        <div
+          className="fixed inset-0 pointer-events-none animate-damage-flash"
+          style={{
+            background: `
+              linear-gradient(to right, rgba(255,0,0,0.3) 0%, transparent 20%, transparent 80%, rgba(255,0,0,0.3) 100%),
+              linear-gradient(to bottom, rgba(255,0,0,0.3) 0%, transparent 20%, transparent 80%, rgba(255,0,0,0.3) 100%)
+            `,
+          }}
+        />
+      )}
     </>
   );
 };
