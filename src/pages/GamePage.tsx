@@ -6,6 +6,7 @@ import MiniMap from '../components/MiniMap';
 import KillLogs from '../components/KillLogs';
 import SkillCooldownIndicator from '../components/UI/SkillCooldownIndicator';
 import ItemCard from '../components/ItemCard';
+import MouseSensitivityController from '../components/UI/MouseSensitivityController';
 import { useAtom, useAtomValue } from 'jotai';
 import { playerInfoAtom, playersAtom } from '../atoms/PlayerAtoms';
 import { playAudioAtom } from '../atoms/GameAtoms';
@@ -20,6 +21,10 @@ const GamePage = () => {
     [players, id],
   );
   const playerItems = currentPlayer?.items || [];
+  const mouseSpeedRef = useRef(0.025);
+  const handleMouseSpeedChange = (value: number) => {
+    mouseSpeedRef.current = value;
+  };
 
   useEffect(() => {
     const currentItemCount = playerItems.length;
@@ -39,12 +44,16 @@ const GamePage = () => {
         gl={{ failIfMajorPerformanceCaveat: true }}
       >
         <color attach="background" args={['#0D1B2A']} />
-        <Scene />
+        <Scene mouseSpeed={mouseSpeedRef.current} />
       </Canvas>
       <MiniMap />
       <KillLogs />
       <SkillCooldownIndicator />
       <ItemCard itemType={playerItems} />
+      <MouseSensitivityController
+        mouseSpeed={mouseSpeedRef.current}
+        onChange={handleMouseSpeedChange}
+      />
     </div>
   );
 };

@@ -22,11 +22,11 @@ import CircleShadow from '../components/UI/Shadow';
 import { Lightning } from '../models/Lightning';
 import BoostEffect from '../components/effect/BoostEffect';
 import DizzyEffect from '../components/effect/DizzyEffect';
-import { useControls } from 'leva';
 
 interface RabbitControllerProps {
   player: Character;
   isLocalPlayer?: boolean;
+  mouseSpeed: number;
 }
 
 const RabbitController = ({
@@ -51,15 +51,13 @@ const RabbitController = ({
     thunderEffect,
   },
   isLocalPlayer,
+  mouseSpeed,
 }: RabbitControllerProps): JSX.Element => {
   const [animation, setAnimation] = useState<RabbitActionName>(
     'CharacterArmature|Idle',
   );
 
   const [showDizzy, setShowDizzy] = useState(false);
-  const { MOUSE_SPEED } = useControls('', {
-    MOUSE_SPEED: { value: 0.025, min: 0.005, max: 0.03, step: 0.005 },
-  });
 
   const { rb, container, character, currentPosition, currentVelocity } =
     useCharacterRefs(position, velocity);
@@ -193,7 +191,7 @@ const RabbitController = ({
     rotationTarget,
     rotationTargetY,
     velocity,
-    mouseSpeed: MOUSE_SPEED,
+    mouseSpeed,
   });
 
   useGameLoop({
@@ -245,7 +243,7 @@ const RabbitController = ({
           </group>
         </group>
         <ProtectEffect
-          duration={protectMotion}
+          duration={itemDuration.shield || protectMotion}
           radius={2.2}
           color={itemDuration.shield > 0 ? '#58ACFA' : '#FFE31A'}
         />

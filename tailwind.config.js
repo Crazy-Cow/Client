@@ -84,6 +84,7 @@ export default {
         fall: 'fall linear infinite',
         appear: 'appear 0.3s ease-out',
         float: 'float 3s ease-in-out infinite',
+        'damage-flash': 'damage-flash 1s ease-out forwards',
       },
     },
   },

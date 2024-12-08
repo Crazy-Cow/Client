@@ -27,9 +27,11 @@ const Players = memo(
   ({
     players,
     localPlayerId,
+    mouseSpeed,
   }: {
     players: any[];
     localPlayerId: string | null | undefined;
+    mouseSpeed: number;
   }) => {
     return (
       <>
@@ -43,6 +45,7 @@ const Players = memo(
                   player={player}
                   key={player.id}
                   isLocalPlayer={isLocalPlayer}
+                  mouseSpeed={mouseSpeed}
                 />
               );
             case 2:
@@ -51,6 +54,7 @@ const Players = memo(
                   player={player}
                   key={player.id}
                   isLocalPlayer={isLocalPlayer}
+                  mouseSpeed={mouseSpeed}
                 />
               );
             case 3:
@@ -59,6 +63,7 @@ const Players = memo(
                   player={player}
                   key={player.id}
                   isLocalPlayer={isLocalPlayer}
+                  mouseSpeed={mouseSpeed}
                 />
               );
             default:
@@ -70,7 +75,11 @@ const Players = memo(
   },
 );
 
-export default function Scene() {
+interface SceneProps {
+  mouseSpeed: number;
+}
+
+export default function Scene({ mouseSpeed }: SceneProps) {
   const players = useAtomValue(playersAtom);
   const gameItems = useAtomValue(gameItemsAtom);
   const { id } = useAtomValue(playerInfoAtom);
@@ -82,7 +91,7 @@ export default function Scene() {
       <Physics timeStep={1 / 30} colliders={false}>
         <Map scale={0.1} position={[0, 0, 0]} model={`/maps/map.glb`} />
         <ItemBoxes items={gameItems} colors={colors} />
-        <Players players={players} localPlayerId={id} />
+        <Players players={players} localPlayerId={id} mouseSpeed={mouseSpeed} />
       </Physics>
     </>
   );

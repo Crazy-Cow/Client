@@ -24,11 +24,11 @@ import { Euler, Vector3 } from 'three';
 import DizzyEffect from '../components/effect/DizzyEffect';
 import { playerRotationAtom } from '../atoms/PlayerAtoms';
 import { useAtomValue } from 'jotai';
-import { useControls } from 'leva';
 
 interface SantaControllerProps {
   player: Character;
   isLocalPlayer?: boolean;
+  mouseSpeed: number;
 }
 
 const SantaController = ({
@@ -53,15 +53,13 @@ const SantaController = ({
     thunderEffect,
   },
   isLocalPlayer,
+  mouseSpeed,
 }: SantaControllerProps): JSX.Element => {
   const [animation, setAnimation] = useState<SantaActionName>(
     'Armature|happy Idle',
   );
 
   const [showDizzy, setShowDizzy] = useState(false);
-  const { MOUSE_SPEED } = useControls('', {
-    MOUSE_SPEED: { value: 0.025, min: 0.005, max: 0.03, step: 0.005 },
-  });
 
   const rotation = useAtomValue(playerRotationAtom);
   const characterRotation = useMemo(() => {
@@ -173,7 +171,7 @@ const SantaController = ({
     rotationTarget,
     rotationTargetY,
     velocity,
-    mouseSpeed: MOUSE_SPEED,
+    mouseSpeed,
   });
 
   useGameLoop({
@@ -232,7 +230,7 @@ const SantaController = ({
           </group>
         </group>
         <ProtectEffect
-          duration={protectMotion}
+          duration={itemDuration.shield || protectMotion}
           radius={2.2}
           color={itemDuration.shield > 0 ? '#58ACFA' : '#FFE31A'}
         />

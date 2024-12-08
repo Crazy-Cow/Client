@@ -21,11 +21,11 @@ import BoostEffect from '../components/effect/BoostEffect';
 import { Vector3 } from 'three';
 import DizzyEffect from '../components/effect/DizzyEffect';
 import AnimatedGhost, { GhostActionName } from '../models/AnimatedGhost';
-import { useControls } from 'leva';
 
 interface GhostControllerProps {
   player: Character;
   isLocalPlayer?: boolean;
+  mouseSpeed: number;
 }
 
 const GhostController = ({
@@ -50,15 +50,13 @@ const GhostController = ({
     thunderEffect,
   },
   isLocalPlayer,
+  mouseSpeed,
 }: GhostControllerProps): JSX.Element => {
   const [animation, setAnimation] = useState<GhostActionName>(
     'CharacterArmature|Flying_Idle',
   );
 
   const [showDizzy, setShowDizzy] = useState(false);
-  const { MOUSE_SPEED } = useControls('', {
-    MOUSE_SPEED: { value: 0.025, min: 0.005, max: 0.03, step: 0.005 },
-  });
 
   const { rb, container, character, currentPosition, currentVelocity } =
     useCharacterRefs(position, velocity);
@@ -165,7 +163,7 @@ const GhostController = ({
     rotationTarget,
     rotationTargetY,
     velocity,
-    mouseSpeed: MOUSE_SPEED,
+    mouseSpeed,
   });
 
   useGameLoop({
@@ -224,7 +222,7 @@ const GhostController = ({
           </group>
         </group>
         <ProtectEffect
-          duration={protectMotion}
+          duration={itemDuration.shield || protectMotion}
           radius={2.2}
           color={itemDuration.shield > 0 ? '#58ACFA' : '#FFE31A'}
         />
