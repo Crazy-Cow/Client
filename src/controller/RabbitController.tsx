@@ -247,7 +247,7 @@ const RabbitController = ({
           </group>
         </group>
         <ProtectEffect
-          duration={protectMotion}
+          duration={itemDuration.shield || protectMotion}
           radius={2.2}
           color={itemDuration.shield > 0 ? '#58ACFA' : '#FFE31A'}
         />
