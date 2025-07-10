@@ -11,6 +11,7 @@ export enum GameScreen {
   GAME = 'game',
   GAME_OVER = 'gameover',
   GAME_LOGS = 'gamelogs',
+  TOURNAMENT_CALLBACK = 'tournament_callback',
 }
 
 export interface RoomInfo {

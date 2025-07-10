@@ -10,6 +10,9 @@ const HomePage = lazy(() => import('../pages/HomePage'));
 const MatchingPage = lazy(() => import('../pages/MatchingPage'));
 const GamePage = lazy(() => import('../pages/GamePage'));
 const GameOverPage = lazy(() => import('../pages/GameOverPage'));
+const TournamentCallbackPage = lazy(
+  () => import('../pages/TournamentCallbackPage'),
+);
 
 const AuthRouter = () => {
   const [gameScreen] = useAtom(gameScreenAtom);
@@ -35,6 +38,7 @@ const AuthRouter = () => {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/tournament-callback" element={<TournamentCallbackPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />

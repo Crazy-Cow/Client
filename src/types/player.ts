@@ -41,6 +41,8 @@ export interface PlayerMovement {
 export interface PlayerInfo {
   id: string | null | undefined;
   nickname: string;
+  tournamentMode?: boolean;
+  challengermodeId?: string;
 }
 
 export interface KillLogInfo {
