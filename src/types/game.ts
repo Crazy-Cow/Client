@@ -95,3 +95,16 @@ export type Controls = {
   catch: boolean;
   skill: boolean;
 };
+
+export type CharacterType = 1 | 2 | 3;
+
+export type SocketOnEvtDataRoomLaunchGame = {
+  charType: CharacterType;
+  gameSessionId: string; // KEM 게임 세션 ID
+};
+
+export type SocketOnEvtDataRoomLaunchReady = {
+  userId: string; // 클라이언트에서 받은 userId
+  charType: CharacterType;
+  gameSessionId: string; // KEM 게임 세션 ID
+};

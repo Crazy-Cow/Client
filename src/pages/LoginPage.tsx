@@ -29,7 +29,10 @@ const LoginPage = () => {
 
   const handleRegisterPlayer = useCallback(async () => {
     const userId = await registerPlayerQuery(player);
-    setPlayer((prev) => ({ ...prev, id: userId }));
+    setPlayer((prev) => ({
+      ...prev,
+      id: userId,
+    }));
     setGameScreen(GameScreen.HOME);
   }, [player, registerPlayerQuery, setGameScreen]);
 
@@ -38,7 +41,11 @@ const LoginPage = () => {
     const currentNickname = inputRef.current?.value || player.nickname;
     if (currentNickname) {
       sessionStorage.setItem('tournament_nickname', currentNickname);
-      setPlayer((prev) => ({ ...prev, nickname: currentNickname }));
+      setPlayer((prev) => ({
+        ...prev,
+        nickname: currentNickname,
+        tournamentMode: true, // 토너먼트 모드로 설정
+      }));
     }
 
     // Challengermode OAuth 설정

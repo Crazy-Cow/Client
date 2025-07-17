@@ -70,7 +70,7 @@ const TournamentCallbackPage = () => {
         console.log('토너먼트 닉네임:', tournamentNickname);
 
         // 서버에서 토큰 교환 및 플레이어 등록
-        const userId = await registerTournamentPlayerQuery({
+        const {userId, accountId} = await registerTournamentPlayerQuery({
           playerInfo: {
             ...player,
             nickname: tournamentNickname || player.nickname,

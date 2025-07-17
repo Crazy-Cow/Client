@@ -1,5 +1,9 @@
 import { io, Socket } from 'socket.io-client';
-import { GameData, RoomInfo } from '../types/game';
+import {
+  GameData,
+  RoomInfo,
+  SocketOnEvtDataRoomLaunchReady,
+} from '../types/game';
 import {
   KillComboLogsInfo,
   KillLogInfo,
@@ -41,12 +45,40 @@ export class SocketService {
   }
 
   // Room 관련
-  enterRoom(charType: number) {
+  enterRoom(charType: number, isKEM?: boolean) {
     if (!this.connected) return;
     if (this.isInRoom) return;
 
-    this.socket.emit('room.enter', { charType });
+    this.socket.emit('room.enter', { charType, isKEM });
     this.isInRoom = true;
+  }
+
+  launchGame(
+    charType: number,
+    gameSessionId: string,
+    challengermodeId?: string,
+    challengermodeNickname?: string,
+  ) {
+    if (!this.connected) return;
+
+    this.socket.emit('room.launchGame', {
+      charType,
+      gameSessionId,
+      challengermodeId,
+      challengermodeNickname,
+    });
+  }
+
+  joinGame(userId: string) {
+    if (!this.connected) return;
+
+    this.socket.emit('game.join', { userId });
+  }
+
+  confirmRoom(userId: string, charType: number, gameSessionId: string) {
+    if (!this.connected) return;
+
+    this.socket.emit('room.confirm', { userId, charType, gameSessionId });
   }
 
   leaveRoom() {
@@ -60,7 +92,7 @@ export class SocketService {
     return () => this.socket.off('room.changeState');
   }
 
-  onGameStartSoon(handler: () => void) {
+  onGameStartSoon(handler: (data: SocketOnEvtDataRoomLaunchReady) => void) {
     this.socket.on('game.ready', handler);
     return () => this.socket.off('game.ready');
   }
@@ -68,6 +100,22 @@ export class SocketService {
   onGameStart(handler: () => void) {
     this.socket.on('game.start', handler);
     return () => this.socket.off('game.start');
+  }
+
+  onGameJoin(handler: () => void) {
+    this.socket.on('game.join', handler);
+    return () => this.socket.off('game.join');
+  }
+
+  onLaunchGameResponse(
+    handler: (data: {
+      userId: string;
+      nickName: string;
+      isGuest: boolean;
+    }) => void,
+  ) {
+    this.socket.on('room.launchGame.response', handler);
+    return () => this.socket.off('room.launchGame.response');
   }
 
   onGameOver(handler: ({ roomId }: { roomId: string }) => void) {

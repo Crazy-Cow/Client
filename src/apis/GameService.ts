@@ -18,17 +18,19 @@ export default class GameService {
     playerInfo: PlayerInfo,
     authorizationCode: string,
     codeVerifier: string,
-  ): Promise<string> {
-    const response = await this.httpClient.post<{ userId: string }>(
-      '/user/enter/tournament',
-      {
-        nickName: playerInfo.nickname,
-        authorizationCode,
-        codeVerifier,
-        redirectUri: window.location.origin + '/tournament-callback',
-      },
-    );
-    return response.userId;
+  ): Promise<{ userId: string; accountId: string }> {
+    const response = await this.httpClient.post<{
+      userId: string;
+      accountId: string;
+    }>('/user/enter/tournament', {
+      nickName: playerInfo.nickname,
+      authorizationCode,
+      codeVerifier,
+      redirectUri: window.location.origin + '/tournament-callback',
+    });
+    localStorage.setItem('accountId', response.accountId);
+    localStorage.setItem('nickname', response.userId);
+    return { userId: response.userId, accountId: response.accountId };
   }
 
   async getTotalGameResult(roomId: string): Promise<GameRankData> {

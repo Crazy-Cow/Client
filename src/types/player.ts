@@ -43,6 +43,7 @@ export interface PlayerInfo {
   nickname: string;
   tournamentMode?: boolean;
   challengermodeId?: string;
+  gameSessionId?: string;
 }
 
 export interface KillLogInfo {

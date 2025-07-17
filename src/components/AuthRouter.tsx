@@ -2,7 +2,13 @@ import { useAtom } from 'jotai';
 import { gameScreenAtom } from '../atoms/GameAtoms';
 import { GameScreen } from '../types/game';
 import { lazy, useEffect } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import ProtectedRoute from './ProtectedRouter';
 
 const LoginPage = lazy(() => import('../pages/LoginPage'));
@@ -13,32 +19,56 @@ const GameOverPage = lazy(() => import('../pages/GameOverPage'));
 const TournamentCallbackPage = lazy(
   () => import('../pages/TournamentCallbackPage'),
 );
+const ChallengermodeCallbackPage = lazy(
+  () => import('../pages/ChallengermodeCallbackPage'),
+);
 
 const AuthRouter = () => {
   const [gameScreen] = useAtom(gameScreenAtom);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    // challengermode 경로에서는 HOME 상태일 때만 리다이렉트하지 않음
+    if (
+      location.pathname.startsWith('/challengermode/') &&
+      gameScreen === GameScreen.HOME
+    ) {
+      return;
+    }
+
     switch (gameScreen) {
       case GameScreen.HOME:
-        navigate('/home');
+        if (location.pathname !== '/home') {
+          navigate('/home');
+        }
         break;
       case GameScreen.MATCHING:
-        navigate('/matching');
+        if (location.pathname !== '/matching') {
+          navigate('/matching');
+        }
         break;
       case GameScreen.GAME:
-        navigate('/game');
+        if (location.pathname !== '/game') {
+          navigate('/game');
+        }
         break;
       case GameScreen.GAME_OVER:
-        navigate('/game-over');
+        if (location.pathname !== '/game-over') {
+          navigate('/game-over');
+        }
         break;
     }
-  }, [gameScreen]);
+  }, [gameScreen, location.pathname, navigate]);
 
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/tournament-callback" element={<TournamentCallbackPage />} />
+      <Route
+        path="/challengermode/:id"
+        element={<ChallengermodeCallbackPage />}
+      />
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />

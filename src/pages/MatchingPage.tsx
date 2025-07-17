@@ -5,6 +5,7 @@ import {
   gameScreenAtom,
   playAudioAtom,
 } from '../atoms/GameAtoms';
+import { playerInfoAtom } from '../atoms/PlayerAtoms';
 import { GameScreen } from '../types/game';
 import useSocket from '../hooks/useSocket';
 import Star, { generateStars } from '../components/UI/Star';
@@ -28,10 +29,21 @@ const MatchingPage = () => {
   const [, playAudio] = useAtom(playAudioAtom);
   const { socket } = useSocket();
   const [characterCharIndex] = useAtom(characterCharIndexAtom);
+  const [playerInfo] = useAtom(playerInfoAtom);
 
   useEffect(() => {
     if (!socket) return;
-    socket.enterRoom(characterCharIndex + 1);
+
+    // 토너먼트 모드인지 확인
+    const isTournamentMode = playerInfo.tournamentMode === true;
+
+    // challengermode에서 들어온 경우 room.launchGame 이벤트 emit
+    if (playerInfo.gameSessionId) {
+      socket.launchGame(characterCharIndex + 1, playerInfo.gameSessionId);
+    } else {
+      // 일반 모드인 경우 room.enter 이벤트 emit
+      socket.enterRoom(characterCharIndex + 1, isTournamentMode);
+    }
 
     const unsubscribeRoomState = socket.onRoomStateChange(
       (roomInfo: RoomInfo) => {
@@ -50,7 +62,14 @@ const MatchingPage = () => {
       unsubscribeGameState();
       unsubscribeGameStart();
     };
-  }, [socket, setGameScreen, setPlayerCount]);
+  }, [
+    socket,
+    setGameScreen,
+    setPlayerCount,
+    characterCharIndex,
+    playerInfo.tournamentMode,
+    playerInfo.gameSessionId,
+  ]);
 
   const createMeteor = (e: React.MouseEvent<HTMLDivElement>) => {
     playAudio('twinkle');

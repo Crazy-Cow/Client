@@ -39,7 +39,13 @@ export const playersAtom = atom<Character[]>([
 
 export const playerInfoAtom = atomWithStorage<PlayerInfo>(
   'player',
-  { id: null, nickname: '' },
+  {
+    id: null,
+    nickname: '',
+    tournamentMode: false,
+    challengermodeId: undefined,
+    gameSessionId: undefined,
+  },
   createJSONStorage(() => sessionStorage),
 );
 

@@ -6,11 +6,11 @@ const useUser = () => {
   const httpClient = new HttpClient();
   const users = new UserService(httpClient);
 
-  const { data: nicknameQuery } = useQuery({
+  const { data: nicknameQuery, isLoading, error } = useQuery({
     queryFn: () => users.getRandomNickname(),
     queryKey: ['userId'],
   });
-  return { nicknameQuery };
+  return { nicknameQuery, isLoading, error };
 };
 
 export default useUser;
