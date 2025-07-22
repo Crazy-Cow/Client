@@ -22,6 +22,9 @@ const TournamentCallbackPage = lazy(
 const ChallengermodeCallbackPage = lazy(
   () => import('../pages/ChallengermodeCallbackPage'),
 );
+const ChallengermodeIntentPage = lazy(
+  () => import('../pages/ChallengermodeIntentPage'),
+);
 
 const AuthRouter = () => {
   const [gameScreen] = useAtom(gameScreenAtom);
@@ -40,6 +43,14 @@ const AuthRouter = () => {
       gameScreen === GameScreen.HOME
     ) {
       console.log('AuthRouter - Skipping redirect for challengermode path');
+      return;
+    }
+
+    // challengermode-intent 경로에서는 리다이렉트하지 않음
+    if (location.pathname.startsWith('/challengermode-intent/')) {
+      console.log(
+        'AuthRouter - Skipping redirect for challengermode-intent path',
+      );
       return;
     }
 
@@ -82,6 +93,10 @@ const AuthRouter = () => {
       <Route
         path="/challengermode/:id"
         element={<ChallengermodeCallbackPage />}
+      />
+      <Route
+        path="/challengermode-intent/:ott"
+        element={<ChallengermodeIntentPage />}
       />
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Navigate to="/home" replace />} />

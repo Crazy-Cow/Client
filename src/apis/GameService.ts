@@ -50,4 +50,20 @@ export default class GameService {
     );
     return response;
   }
+
+  // Intent account linking을 위한 게임 계정 인증
+  async verifyGameAccount(ott: string): Promise<{
+    success: boolean;
+    userId?: string;
+    accountId?: string;
+  }> {
+    const response = await this.httpClient.post<{
+      success: boolean;
+      userId?: string;
+      accountId?: string;
+    }>('/user/verify-game-account', {
+      accountLinkingToken: ott,
+    });
+    return response;
+  }
 }

@@ -50,6 +50,13 @@ const useGame = () => {
       onSuccess: () =>
         queryClient.invalidateQueries({ queryKey: ['myGameInfo'] }),
     });
+
+  const { mutateAsync: verifyGameAccount } = useMutation({
+    mutationFn: (ott: string) => game.verifyGameAccount(ott),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['playerInfo'] }),
+  });
+
   return {
     registerPlayerQuery,
     registerTournamentPlayerQuery,
@@ -57,6 +64,7 @@ const useGame = () => {
     isPendingRankQuery,
     myGameResultQuery,
     isPendingResultQuery,
+    verifyGameAccount,
   };
 };
 
