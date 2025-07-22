@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import useGame from '../hooks/useGame';
 
 const ChallengermodeIntentPage = () => {
-  const [player, setPlayer] = useAtom(playerInfoAtom);
+  const [_, setPlayer] = useAtom(playerInfoAtom);
   const { ott } = useParams<{ ott: string }>();
   const navigate = useNavigate();
   const { verifyGameAccount } = useGame();

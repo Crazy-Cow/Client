@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
-import { useAtom } from 'jotai';
-import { playerInfoAtom } from '../atoms/PlayerAtoms';
 import { useParams } from 'react-router-dom';
 
 const ChallengermodeCallbackPage = () => {
-  const [_, setPlayer] = useAtom(playerInfoAtom);
   const { id: gameSessionId } = useParams<{ id: string }>();
 
   // URL 파라미터에서 sessionId 확인 및 자동 OAuth 실행
