@@ -19,15 +19,18 @@ const useGame = () => {
       playerInfo,
       authorizationCode,
       codeVerifier,
+      gameSessionId,
     }: {
       playerInfo: PlayerInfo;
       authorizationCode: string;
       codeVerifier: string;
+      gameSessionId?: string;
     }) =>
       game.registerTournamentPlayer(
         playerInfo,
         authorizationCode,
         codeVerifier,
+        gameSessionId,
       ),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ['playerInfo'] }),

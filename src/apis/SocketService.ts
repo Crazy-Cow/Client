@@ -53,19 +53,13 @@ export class SocketService {
     this.isInRoom = true;
   }
 
-  launchGame(
-    charType: number,
-    gameSessionId: string,
-    challengermodeId?: string,
-    challengermodeNickname?: string,
-  ) {
+  launchGame(charType: number, gameSessionId: string, accountId?: string) {
     if (!this.connected) return;
 
     this.socket.emit('room.launchGame', {
       charType,
       gameSessionId,
-      challengermodeId,
-      challengermodeNickname,
+      accountId,
     });
   }
 
