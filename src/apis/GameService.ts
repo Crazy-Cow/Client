@@ -27,7 +27,7 @@ export default class GameService {
       nickName: playerInfo.nickname,
       authorizationCode,
       codeVerifier,
-      redirectUri: window.location.origin + '/tournament-callback',
+      redirectUri: import.meta.env.VITE_CHALLENGERMODE_REDIRECT_URI,
       gameSessionId,
     });
     return { userId: response.userId, accountId: response.accountId };

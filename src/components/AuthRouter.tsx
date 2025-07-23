@@ -32,33 +32,21 @@ const AuthRouter = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log('AuthRouter - useEffect triggered:', {
-      pathname: location.pathname,
-      gameScreen,
-    });
-
     // challengermode 경로에서는 HOME 상태일 때만 리다이렉트하지 않음
     if (
       location.pathname.startsWith('/challengermode/') &&
       gameScreen === GameScreen.HOME
     ) {
-      console.log('AuthRouter - Skipping redirect for challengermode path');
       return;
     }
 
     // challengermode-intent 경로에서는 리다이렉트하지 않음
     if (location.pathname.startsWith('/challengermode-intent/')) {
-      console.log(
-        'AuthRouter - Skipping redirect for challengermode-intent path',
-      );
       return;
     }
 
     // tournament-callback 경로에서는 리다이렉트하지 않음
     if (location.pathname === '/tournament-callback') {
-      console.log(
-        'AuthRouter - Skipping redirect for tournament-callback path',
-      );
       return;
     }
 
