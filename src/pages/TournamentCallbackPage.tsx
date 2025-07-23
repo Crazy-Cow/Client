@@ -66,11 +66,6 @@ const TournamentCallbackPage = () => {
         const gameSessionId =
           localStorage.getItem('tournament_gameSessionId') || '';
 
-        console.log('OAuth 인증 성공! Authorization Code:', code);
-        console.log('플레이어 정보:', player);
-        console.log('토너먼트 닉네임:', tournamentNickname);
-        console.log('gameSessionId from localStorage:', gameSessionId);
-
         // 서버에서 토큰 교환 및 플레이어 등록
         const { userId, accountId } = await registerTournamentPlayerQuery({
           playerInfo: {
@@ -81,12 +76,6 @@ const TournamentCallbackPage = () => {
           authorizationCode: code,
           codeVerifier: codeVerifier,
           gameSessionId: gameSessionId || undefined,
-        });
-
-        console.log('TournamentCallbackPage - Setting player info:', {
-          userId,
-          accountId,
-          gameSessionId,
         });
 
         setPlayer((prev) => ({

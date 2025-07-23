@@ -39,25 +39,9 @@ const MatchingPage = () => {
 
     // challengermode에서 들어온 경우 room.launchGame 이벤트 emit
     if (playerInfo.gameSessionId) {
-      console.log(
-        '캐릭터 타입: ',
-        characterCharIndex + 1,
-        '게임 세션 아이디: ',
-        playerInfo.gameSessionId,
-        '어카운트 아이디: ',
-        playerInfo.challengermodeId,
-      );
-
-      socket.launchGame(
-        characterCharIndex + 1,
-        playerInfo.gameSessionId,
-        playerInfo.challengermodeId,
-      );
-
       // room.launchGame.response 이벤트 수신 시 플레이어 정보 업데이트
       const unsubscribeLaunchGameResponse = socket.onLaunchGameResponse(
         (data: { userId: string; nickName: string; isGuest: boolean }) => {
-          console.log('Received room.launchGame.response:', data);
           setPlayer((prev) => ({
             ...prev,
             id: data.userId,
@@ -69,7 +53,6 @@ const MatchingPage = () => {
 
       // game.join 이벤트 수신 시 게임 화면으로 이동
       const unsubscribeGameJoin = socket.onGameJoin(() => {
-        console.log('Received game.join event, moving to game page');
         setGameScreen(GameScreen.GAME);
       });
 

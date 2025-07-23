@@ -50,8 +50,6 @@ const ChallengermodeIntentPage = () => {
       // 백엔드로 OTT 토큰 전송
       const result = await verifyGameAccount(ottToken);
 
-      console.log('Game account verification successful:', result);
-
       // 사용자 정보 업데이트
       if (result.success) {
         setPlayer((prev) => ({
