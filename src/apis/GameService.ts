@@ -4,12 +4,33 @@ import HttpClient from './HttpClient';
 
 export default class GameService {
   constructor(private readonly httpClient: HttpClient) {}
+
   async registerPlayer(playerInfo: PlayerInfo): Promise<string> {
     const response = await this.httpClient.post<{ userId: string }>(
       '/user/enter',
       { userId: playerInfo.id, nickName: playerInfo.nickname },
     );
     return response.userId;
+  }
+
+  // 토너먼트 플레이어 등록 (OAuth 토큰 교환 포함)
+  async registerTournamentPlayer(
+    playerInfo: PlayerInfo,
+    authorizationCode: string,
+    codeVerifier: string,
+    gameSessionId?: string,
+  ): Promise<{ userId: string; accountId: string }> {
+    const response = await this.httpClient.post<{
+      userId: string;
+      accountId: string;
+    }>('/user/enter/tournament', {
+      nickName: playerInfo.nickname,
+      authorizationCode,
+      codeVerifier,
+      redirectUri: window.location.origin + '/tournament-callback',
+      gameSessionId,
+    });
+    return { userId: response.userId, accountId: response.accountId };
   }
 
   async getTotalGameResult(roomId: string): Promise<GameRankData> {
@@ -27,6 +48,22 @@ export default class GameService {
       {},
       { roomId, userId },
     );
+    return response;
+  }
+
+  // Intent account linking을 위한 게임 계정 인증
+  async verifyGameAccount(ott: string): Promise<{
+    success: boolean;
+    userId?: string;
+    accountId?: string;
+  }> {
+    const response = await this.httpClient.post<{
+      success: boolean;
+      userId?: string;
+      accountId?: string;
+    }>('/user/verify-game-account', {
+      accountLinkingToken: ott,
+    });
     return response;
   }
 }

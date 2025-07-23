@@ -4,16 +4,19 @@ import { useAtom, useAtomValue } from 'jotai';
 import { socketServiceAtom, socketStatusAtom } from '../atoms/GameAtoms';
 import { playerInfoAtom } from '../atoms/PlayerAtoms';
 
-const useSocket = () => {
+const useSocket = (gameSessionId?: string) => {
   const [socket, setSocket] = useAtom(socketServiceAtom);
   const [status, setStatus] = useAtom(socketStatusAtom);
 
   const { id } = useAtomValue(playerInfoAtom);
 
   useEffect(() => {
-    if (socket || !id) return;
+    // gameSessionId가 있으면 그것을 사용, 없으면 player.id 사용
+    const socketId = gameSessionId || id;
+    
+    if (socket || !socketId) return;
 
-    const socketService = SocketService.getInstance(id);
+    const socketService = SocketService.getInstance(socketId);
     setStatus('connecting');
 
     socketService.onConnect(() => {
@@ -22,7 +25,7 @@ const useSocket = () => {
     });
     setSocket(socketService);
     if (socketService.connected) setStatus('connected');
-  }, [id]);
+  }, [id, gameSessionId]);
 
   return { socket, status, connected: status === 'connected' };
 };

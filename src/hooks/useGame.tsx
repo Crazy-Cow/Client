@@ -14,6 +14,28 @@ const useGame = () => {
       queryClient.invalidateQueries({ queryKey: ['playerInfo'] }),
   });
 
+  const { mutateAsync: registerTournamentPlayerQuery } = useMutation({
+    mutationFn: ({
+      playerInfo,
+      authorizationCode,
+      codeVerifier,
+      gameSessionId,
+    }: {
+      playerInfo: PlayerInfo;
+      authorizationCode: string;
+      codeVerifier: string;
+      gameSessionId?: string;
+    }) =>
+      game.registerTournamentPlayer(
+        playerInfo,
+        authorizationCode,
+        codeVerifier,
+        gameSessionId,
+      ),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['playerInfo'] }),
+  });
+
   const { mutateAsync: gameRankQuery, isPending: isPendingRankQuery } =
     useMutation({
       mutationFn: (roomId: string) => game.getTotalGameResult(roomId),
@@ -28,12 +50,21 @@ const useGame = () => {
       onSuccess: () =>
         queryClient.invalidateQueries({ queryKey: ['myGameInfo'] }),
     });
+
+  const { mutateAsync: verifyGameAccount } = useMutation({
+    mutationFn: (ott: string) => game.verifyGameAccount(ott),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['playerInfo'] }),
+  });
+
   return {
     registerPlayerQuery,
+    registerTournamentPlayerQuery,
     gameRankQuery,
     isPendingRankQuery,
     myGameResultQuery,
     isPendingResultQuery,
+    verifyGameAccount,
   };
 };
 

@@ -117,7 +117,7 @@ export default function AnimatedSanta({
             fontSize={0.4}
             anchorX="center"
             anchorY="middle"
-            font="fonts/PaytoneOne-Regular.ttf"
+            font="/fonts/PaytoneOne-Regular.ttf"
           >
             {nickName}
             <meshBasicMaterial color="white" />
@@ -129,7 +129,7 @@ export default function AnimatedSanta({
             fontSize={0.4}
             anchorX="center"
             anchorY="middle"
-            font="fonts/PaytoneOne-Regular.ttf"
+            font="/fonts/PaytoneOne-Regular.ttf"
           >
             {nickName}
             <meshBasicMaterial color="black" />

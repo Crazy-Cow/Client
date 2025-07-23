@@ -95,7 +95,7 @@ export default function AnimatedGhost({
             fontSize={0.4}
             anchorX="center"
             anchorY="middle"
-            font="fonts/PaytoneOne-Regular.ttf"
+            font="/fonts/PaytoneOne-Regular.ttf"
             material-opacity={opacity}
             material-transparent
           >
@@ -109,7 +109,7 @@ export default function AnimatedGhost({
             fontSize={0.4}
             anchorX="center"
             anchorY="middle"
-            font="fonts/PaytoneOne-Regular.ttf"
+            font="/fonts/PaytoneOne-Regular.ttf"
             material-opacity={opacity}
             material-transparent
           >
