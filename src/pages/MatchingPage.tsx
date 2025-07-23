@@ -39,6 +39,11 @@ const MatchingPage = () => {
 
     // challengermode에서 들어온 경우 room.launchGame 이벤트 emit
     if (playerInfo.gameSessionId) {
+      socket.launchGame(
+        characterCharIndex + 1,
+        playerInfo.gameSessionId,
+        playerInfo.challengermodeId,
+      );
       // room.launchGame.response 이벤트 수신 시 플레이어 정보 업데이트
       const unsubscribeLaunchGameResponse = socket.onLaunchGameResponse(
         (data: { userId: string; nickName: string; isGuest: boolean }) => {
