@@ -13,7 +13,7 @@ const useSocket = (gameSessionId?: string) => {
   useEffect(() => {
     // gameSessionId가 있으면 그것을 사용, 없으면 player.id 사용
     const socketId = gameSessionId || id;
-    
+
     if (socket || !socketId) return;
 
     const socketService = SocketService.getInstance(socketId);

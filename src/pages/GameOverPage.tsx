@@ -1,6 +1,6 @@
-import { useAtom, useAtomValue } from 'jotai';
-import { gameScreenAtom, roomIdAtom } from '../atoms/GameAtoms';
-import { GameScreen, Row } from '../types/game';
+import { useAtomValue } from 'jotai';
+import { roomIdAtom } from '../atoms/GameAtoms';
+import { Row } from '../types/game';
 import { lazy, useEffect, useState } from 'react';
 import useGame from '../hooks/useGame';
 import { playerInfoAtom } from '../atoms/PlayerAtoms';
@@ -11,7 +11,8 @@ const AnimatedSanta = lazy(() => import('../models/AnimatedSanta'));
 const AnimatedGhost = lazy(() => import('../models/AnimatedGhost'));
 
 const GameOverPage = () => {
-  const [, setGameScreen] = useAtom(gameScreenAtom);
+  // NOTE: 게임 재시작 비활성화
+  // const [, setGameScreen] = useAtom(gameScreenAtom);
   const roomId = useAtomValue(roomIdAtom);
   const { gameRankQuery, isPendingRankQuery } = useGame();
   const [row, setRow] = useState<Row[]>([]);
@@ -25,9 +26,9 @@ const GameOverPage = () => {
     fetchWinner();
   }, [gameRankQuery, setRow, roomId]);
 
-  const handlePlayAgain = () => {
-    setGameScreen(GameScreen.HOME);
-  };
+  // const handlePlayAgain = () => {
+  //   setGameScreen(GameScreen.HOME);
+  // };
 
   const CharacterWithMedal = ({
     characterType,
@@ -194,7 +195,7 @@ const GameOverPage = () => {
             </div>
           </div>
         )}
-        <div className="absolute bottom-0 w-full flex justify-between">
+        {/* <div className="absolute bottom-0 w-full flex justify-between">
           <button
             onClick={handlePlayAgain}
             className="bg-white text-xl font-semibold rounded-tr-xl transition-colors min-w-56 min-h-16 p-4 hover:scale-110"
@@ -203,7 +204,7 @@ const GameOverPage = () => {
           >
             한판 더?
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
