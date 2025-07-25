@@ -113,16 +113,11 @@ const LoginPage = () => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center flex-col">
-      <video
-        autoPlay
-        loop
-        muted
-        preload="auto"
+      <img
         className="absolute w-full h-full object-cover"
-        aria-label="xmas-background-video"
-      >
-        <source src={import.meta.env.VITE_VIDEO_URL} type="video/mp4" />
-      </video>
+        src={import.meta.env.VITE_ERROR_IMAGE_URL}
+        aria-label="xmas-background"
+      ></img>
       <div className="relative z-10 flex flex-col gap-10">
         <h1 className="text-center font-bold text-white text-6xl">
           X-MAS RUN🎅🏻
