@@ -53,8 +53,8 @@ const LoginPage = () => {
       .VITE_CHALLENGERMODE_CLIENT_ID;
     const CHALLENGERMODE_REDIRECT_URI = import.meta.env
       .VITE_CHALLENGERMODE_REDIRECT_URI;
-    const CHALLENGERMODE_AUTH_URL =
-      'https://challengermode.com/oauth/authorize';
+    const CHALLENGERMODE_AUTH_URL = import.meta.env
+      .VITE_CHALLENGERMODE_AUTH_URL;
 
     // PKCE 구현
     // 1. Generate a URL safe code_verifier
